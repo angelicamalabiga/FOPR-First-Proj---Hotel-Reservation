@@ -1,0 +1,218 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NAME_LENGTH 100
+#define MAX_CONTACT_LENGTH 15
+#define MAX_DATE_LENGTH 11
+#define MAX_TIME_LENGTH 10
+#define NUM_ROOMS 10
+#define NUM_CUSTOMERS 5
+
+struct Reservation {
+    int roomNumber;
+    char name[MAX_NAME_LENGTH];
+    char email[MAX_NAME_LENGTH];
+    char contact[MAX_CONTACT_LENGTH];
+    char checkInDate[MAX_DATE_LENGTH];
+    char checkInTime[MAX_TIME_LENGTH];
+};
+
+struct Reservation reservations[NUM_ROOMS];
+
+void displayCustomerInfo(char name[], char email[], char contact[], char checkInDate[], char checkInTime[]) {
+    printf("\t\t\n                                          Name: %s", name);
+    printf("\t\t\n                                          Email: %s", email);
+    printf("\t\t\n                                          Contact Number: %s", contact);
+    printf("\t\t\n                                          Check-In Date: %s", checkInDate);
+    printf("\t\t\n                                          Check-In Time: %s\n\n", checkInTime);
+           
+           
+}
+
+void getCustomerInfo(char name[], char email[], char contact[], char checkInDate[], char checkInTime[]) {
+    printf("\n");
+    printf("\t\t                   ----------------------------------------------\n");
+    printf("\t\t                   |     Name: ");
+    scanf(" %[^\n]", name);
+    printf("\t\t                   ----------------------------------------------\n");
+
+    printf("\t\t                   |     Email: ");
+    scanf("%s", email); 
+    printf("\t\t                   ----------------------------------------------\n");
+
+    printf("\t\t                   |     Contact Number: ");
+    scanf("%s", contact); 
+    printf("\t\t                   ----------------------------------------------\n");
+
+    printf("\t\t                   |     Check-In Date (MM/DD/YYYY): ");
+    scanf("%s", checkInDate);
+    printf("\t\t                   ----------------------------------------------\n");
+
+    printf("\t\t                   |     Check-In Time: ");
+    scanf("%s", checkInTime);
+    printf("\t\t                   ----------------------------------------------\n");
+}
+
+void displayRoomDetails() {
+    
+    printf("\n");
+    printf("\t\t\n                                                    Details:\n");
+    printf("\t\t                  ------------------------------------------------\n");
+    printf("\t\t                                    Room 1-5:\n");
+    printf("\t\t                     Bed Type: 1 Queen/King Bed\n");
+    printf("\t\t                     Capacity: 1-2 Persons\n");
+    printf("\n");
+    printf("\t\t                                    Room 6-10:\n");
+    printf("\t\t                     Bed Type: 1 Master Bed and 1 Double Deck Bed\n");
+    printf("\t\t                     Capacity: 3-5 Persons\n\n");
+    printf("\t\t                  ------------------------------------------------\n");
+    printf("\n");
+}
+
+void checkRoomAvailability() {
+    printf("\t\t\n                                               Room availability:\n");
+    printf("\n");
+    for (int i = 0; i < NUM_ROOMS; ++i) {
+        if (reservations[i].roomNumber == 0) {
+            printf("\t\t                           Room %d is available\n", i + 1);
+        } else {
+            printf("\t\t                           Room %d is reserved for %s\n", reservations[i].roomNumber, reservations[i].name);
+        }
+    }
+}
+
+int reserveRoom(int roomNumber, char name[], char email[], char contact[], char checkInDate[], char checkInTime[]) {
+    if (reservations[roomNumber - 1].roomNumber == 0) {
+        reservations[roomNumber - 1].roomNumber = roomNumber;
+        snprintf(reservations[roomNumber - 1].name, MAX_NAME_LENGTH, "%s", name);
+        snprintf(reservations[roomNumber - 1].email, MAX_NAME_LENGTH, "%s", email);
+        snprintf(reservations[roomNumber - 1].contact, MAX_CONTACT_LENGTH, "%s", contact);
+        snprintf(reservations[roomNumber - 1].checkInDate, MAX_DATE_LENGTH, "%s", checkInDate);
+        snprintf(reservations[roomNumber - 1].checkInTime, MAX_TIME_LENGTH, "%s", checkInTime);
+        return 1; 
+    } else {
+        printf("\t\t                                 Room %d is already reserved.\n", roomNumber);
+        return 0; 
+    }
+}
+
+int main() {
+    char name[MAX_NAME_LENGTH], email[MAX_NAME_LENGTH], contact[MAX_CONTACT_LENGTH], checkInDate[MAX_DATE_LENGTH], checkInTime[MAX_TIME_LENGTH];
+    int choice;
+
+
+    for (int i = 0; i < NUM_ROOMS; ++i) {
+        reservations[i].roomNumber = 0;
+    }
+
+    
+    printf("\n");
+    printf("\t\t=====================================================================================\n ");
+    printf("\t\t|                                                                                   |\n");
+    printf("\t\t|                          ------------------------------------                     |\n");
+    printf("\t\t|                            Welcome to The Celestial's Hotel                       |\n");
+    printf("\t\t|                          ------------------------------------                     |\n");
+    printf("\t\t|                                                                                   |\n");
+    printf("\t\t=====================================================================================\n");
+    printf("\n\n");
+
+    do {
+        printf("\n");
+        printf("\t\t                                 Hotel Reservations:\n");
+        printf("\n");
+        printf("\t\t                   ===========================================\n");
+        printf("\t\t                   |                                         |\n");
+        printf("\t\t                   |    1. Reservation Customer Info's       |\n");
+        printf("\t\t                   |                                         |\n");
+        printf("\t\t                   -------------------------------------------\n");
+        printf("\t\t                   |                                         |\n");
+        printf("\t\t                   |    2. Book a Room                       |\n");
+        printf("\t\t                   |                                         |\n");
+        printf("\t\t                   -------------------------------------------\n");
+        printf("\t\t                   |                                         |\n");
+        printf("\t\t                   |    3. Exit                              |\n");
+        printf("\t\t                   |                                         |\n");
+        printf("\t\t                   ===========================================\n");
+        printf("\n");
+        printf("\t\t                               Enter your choice: ");
+        
+        
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                getCustomerInfo(name, email, contact, checkInDate, checkInTime);
+                displayCustomerInfo(name, email, contact, checkInDate, checkInTime);
+                char confirm;
+                do {
+                    printf("\n");
+                    printf("                          Please enter 'y' if your answer is yes and 'n' if your answer is no.");
+                    printf("\n\n");
+					printf("\t\t                      Is the information correct? %s: ", name);
+                    scanf(" %c", &confirm);
+                    if (confirm == 'y' || confirm == 'Y') {
+                    break;
+                    } else if (confirm == 'n' || confirm == 'N') {
+                        getCustomerInfo(name, email, contact, checkInDate, checkInTime);
+                        displayCustomerInfo(name, email, contact, checkInDate, checkInTime);
+                    } else {
+                    printf("\n");
+                    printf("\t\t                           Invalid choice. Please enter 'y' or 'n'.\n");
+                    }
+            } while (1);
+
+                break;
+               
+			case 2:
+                displayRoomDetails();
+                char seeAvailableRooms;
+                do {
+                    printf("                          Please enter 'y' if your answer is yes and 'n' if your answer is no.");
+                    printf("\n\n");
+					printf("\t\t                           Want to see available rooms? %s: ", name);
+                    scanf(" %c", &seeAvailableRooms);
+                    if (seeAvailableRooms == 'y' || seeAvailableRooms == 'Y') {
+                        checkRoomAvailability();
+                        break;
+                    } else if (seeAvailableRooms == 'n' || seeAvailableRooms == 'N') {
+                        printf("\t\t\n                                               Thank you, we understand.\n");
+                        printf("\n"); 
+                        break;
+                    } else {
+                        printf("\t\t                      Invalid choice. Please enter 'y' or 'n'.\n");
+                        printf("\n");
+                    }
+                } while (1);
+
+                if (seeAvailableRooms == 'y' || seeAvailableRooms == 'Y') {
+                    int roomNumber;
+                    printf("\t\t\n                                          Enter your preferred room number: ");
+                    scanf("%d", &roomNumber);
+
+                    if (reserveRoom(roomNumber, name, email, contact, checkInDate, checkInTime)) {
+                        printf("\t\t\n\n                             Thank you for choosing to stay with us. Room %d is reserved for %s.\n\n", roomNumber, name);
+                    } else {
+                        printf("\t\t\n                                     Reservation failed. Please choose another room.\n");
+                    }
+                }
+                break;
+
+            case 3:
+                printf("\n");
+                printf("\t\t========================================================================================");
+                printf("\n\n                               We hope your next stay at The Celestial's Hotel will be a\n"); 
+                printf("                           pleasant journey and looking forward to welcoming you back again!\n\n");
+                printf("\t\t=========================================================================================");
+                break;
+
+            default:
+                printf("\n"); 
+                printf("\t\t                                   Invalid choice.\n");
+                printf("\n");
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
